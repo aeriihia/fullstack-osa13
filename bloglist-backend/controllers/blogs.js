@@ -18,17 +18,26 @@ router.post('/', async (req, res) => {
   }
 })
 
+router.put('/:id', async (req, res) => {
+  const blog = await Blog.findByPk(req.params.id)
+  console.log(blog.toJSON())
+  if (blog) {
+    blog.likes = req.body.likes
+    await blog.save()
+    console.log(blog.toJSON())
+    return res.json(blog)
+  } else {
+    res.status(404).end()
+  }
+})
+
 router.delete('/:id', async (req, res) => {
   const blog = await Blog.findByPk(req.params.id)
   console.log(blog.toJSON())
   if (blog) {
-    try {
-      await Blog.destroy({where:{id: req.params.id}})
-      return res.status(200).json('OK')
-    } catch (error) {
-      return res.status(400).json({ error })
-    }
+    await blog.destroy()
   }
+  res.status(204).end()
 })
 
 module.exports = router
