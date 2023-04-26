@@ -14,8 +14,8 @@ const blogFinder = async (req, res, next) => {
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
 
-  if (error.name) {
-    return res.status(400).send({ error: error.name })
+  if (error) {
+    return res.status(400).send({ error: error.message })
   }
 
   next(error)
